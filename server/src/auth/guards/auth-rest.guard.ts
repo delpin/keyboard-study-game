@@ -5,19 +5,20 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { jwtConstants } from './constants';
+import { jwtConstants } from '../types/constants';
 import { Request } from 'express';
 import { Reflector } from '@nestjs/core';
-import { IS_PUBLIC_KEY } from './skip-auth.decorator';
-import { AccessTokenObject } from './access-token.interface';
+import { IS_PUBLIC_KEY } from '../decorators/skip-auth.decorator';
+import { AccessTokenObject } from '../types/access-token.interface';
 
 @Injectable()
-export class AuthGuard implements CanActivate {
+export class AuthRestGuard implements CanActivate {
   constructor(
     private jwtService: JwtService,
     private reflector: Reflector,
   ) {}
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
       context.getHandler(),

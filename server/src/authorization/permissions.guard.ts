@@ -2,7 +2,7 @@ import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { PermissionsList } from './permissions.enum';
 import { PERMISSIONS_KEY } from './permissions.decorator';
-import { AccessTokenObject } from 'src/auth/access-token.interface';
+import { AccessTokenObject } from 'src/auth/types/access-token.interface';
 
 @Injectable()
 export class PermissionsGuard implements CanActivate {
@@ -13,7 +13,7 @@ export class PermissionsGuard implements CanActivate {
       PermissionsList[]
     >(PERMISSIONS_KEY, [context.getHandler(), context.getClass()]);
 
-    if (!requiredPermissions) {
+    if (!requiredPermissions?.length) {
       return true;
     }
     const { user }: { user: AccessTokenObject } = context
